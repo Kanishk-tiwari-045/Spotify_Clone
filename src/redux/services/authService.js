@@ -15,13 +15,23 @@ export class AuthService {
     return `${adjective}${noun}${numbers}`
   }
 
+  // FIXED: Support both old and new signup formats
   static signup(userData) {
     const users = this.getUsers()
     const codename = this.generateCodename()
     
-    // Enhanced validation for signup with email
-    const name = userData.name?.trim()
-    const email = userData.email?.trim()
+    // Handle both old format (just name string) and new format (userData object)
+    let name, email
+    
+    if (typeof userData === 'string') {
+      // Old format: signup(name)
+      name = userData.trim()
+      email = null
+    } else {
+      // New format: signup({name, email, password})
+      name = userData.name?.trim()
+      email = userData.email?.trim() || null
+    }
     
     if (!name || name.length < 2) {
       throw new Error('Name must be at least 2 characters long.')
@@ -40,7 +50,7 @@ export class AuthService {
     const newUser = {
       id: Date.now().toString(),
       name: name,
-      email: email || null,
+      email: email,
       codename,
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
@@ -68,9 +78,20 @@ export class AuthService {
     return { user: newUser, codename }
   }
 
-  static login(credentials) {
+  // FIXED: Support both old and new login formats
+  static login(nameOrCredentials, codename) {
     const users = this.getUsers()
-    const { name, email, codename } = credentials
+    let name, email
+    
+    if (typeof nameOrCredentials === 'string') {
+      // Old format: login(name, codename)
+      name = nameOrCredentials
+    } else {
+      // New format: login({name, email, codename})
+      name = nameOrCredentials.name
+      email = nameOrCredentials.email
+      codename = nameOrCredentials.codename
+    }
     
     let user = null
     
@@ -88,7 +109,7 @@ export class AuthService {
     }
 
     if (!user) {
-      throw new Error('Invalid credentials. Please check your name/email and codename.')
+      throw new Error('Invalid name or codename. Please check your credentials.')
     }
 
     // Update last login
@@ -128,14 +149,12 @@ export class AuthService {
     return this.getCurrentUser() !== null
   }
 
-  // NEW: Playlist persistence methods
+  // Playlist persistence methods (unchanged)
   static initializeUserPlaylists(userId) {
     const playlistKey = `${this.PLAYLISTS_KEY}${userId}`
     
-    // Check if user already has playlists
     const existingPlaylists = localStorage.getItem(playlistKey)
     if (!existingPlaylists) {
-      // Create default "Liked Songs" playlist
       const defaultPlaylists = [
         {
           id: 'liked-songs',
@@ -184,7 +203,6 @@ export class AuthService {
     }
   }
 
-  // NEW: Enhanced logout with playlist cleanup option
   static logoutWithCleanup(clearPlaylists = false) {
     const currentUser = this.getCurrentUser()
     

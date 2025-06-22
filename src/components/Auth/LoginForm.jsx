@@ -59,7 +59,7 @@ const LoginForm = ({ onSwitchToSignup }) => {
   }
 
   return (
-    <div className="w-full max-h-[80vh] overflow-y-auto">
+    <div className="w-full max-h-[80vh] overflow-hidden">
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name Input - Made more compact */}
         <div className="relative">
@@ -178,9 +178,9 @@ const LoginForm = ({ onSwitchToSignup }) => {
         <button
           type="submit"
           disabled={isLoading || !isFormValid}
-          className={`w-full relative overflow-hidden rounded-xl py-3 px-6 font-bold text-base transition-all duration-300 transform ${
+          className={`w-full relative rounded-xl py-3 px-6 font-bold text-base transition-all duration-300 transform ${
             isFormValid && !isLoading
-              ? 'bg-gradient-to-r from-spotify-green to-green-400 text-black hover:from-green-400 hover:to-spotify-green hover:scale-105 shadow-lg hover:shadow-spotify-green/25'
+              ? 'bg-gradient-to-r from-spotify-green to-green-400 text-black hover:from-green-400 hover:to-spotify-green hover:scale-102 shadow-lg hover:shadow-spotify-green/25'
               : 'bg-gray-600 text-gray-400 cursor-not-allowed'
           }`}
         >

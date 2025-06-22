@@ -152,11 +152,21 @@ const authSlice = createSlice({
   }
 })
 
-// Enhanced async action creators with playlist integration
+// FIXED: Enhanced async action creators with backward compatibility
 export const signup = (userData) => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const result = AuthService.signup(userData)
+    // Handle both old format (just name string) and new format (userData object)
+    let signupData
+    if (typeof userData === 'string') {
+      // Old format from your forms: signup(name)
+      signupData = userData
+    } else {
+      // New format: signup({name, email, password})
+      signupData = userData
+    }
+    
+    const result = AuthService.signup(signupData)
     dispatch(signupSuccess(result))
     
     // Initialize user playlists after successful signup
@@ -166,10 +176,19 @@ export const signup = (userData) => async (dispatch) => {
   }
 }
 
-export const login = (credentials) => async (dispatch) => {
+export const login = (nameOrCredentials, codename) => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const user = AuthService.login(credentials)
+    let user
+    
+    if (typeof nameOrCredentials === 'string' && codename) {
+      // Old format from your forms: login(name, codename)
+      user = AuthService.login(nameOrCredentials, codename)
+    } else {
+      // New format: login({name, codename})
+      user = AuthService.login(nameOrCredentials)
+    }
+    
     dispatch(loginSuccess(user))
     
     // Initialize user playlists after successful login
