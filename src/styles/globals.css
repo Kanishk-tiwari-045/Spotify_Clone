@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Spotify-like styles */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Circular', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    overflow: hidden;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #121212;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #535353;
+    border-radius: 6px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #727272;
+  }
+}
+
+@layer components {
+  /* Button variants */
+  .btn-primary {
+    @apply bg-spotify-green text-black font-bold py-2 px-6 rounded-full hover:bg-green-400 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border border-spotify-text-gray text-white font-bold py-2 px-6 rounded-full hover:border-white hover:scale-105 transition-all duration-200;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-spotify-text-gray hover:text-white transition-colors duration-200;
+  }
+  
+  /* Card styles */
+  .music-card {
+    @apply bg-spotify-light-gray rounded-lg p-4 hover:bg-gray-700 transition-all duration-300 cursor-pointer;
+  }
+  
+  .music-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Input styles */
+  .search-input {
+    @apply bg-white text-black rounded-full px-12 py-3 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-spotify-green;
+  }
+  
+  /* Gradient overlays */
+  .gradient-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%);
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(135deg, #1DB954 0%, #1ed760 50%, #1aa34a 100%);
+  }
+  
+  /* Animation classes */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+  
+  /* Player specific styles */
+  .progress-bar {
+    @apply w-full h-1 bg-gray-600 rounded-full cursor-pointer;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-spotify-green rounded-full transition-all duration-100;
+  }
+  
+  .volume-slider {
+    @apply w-24 h-1 bg-gray-600 rounded-full cursor-pointer;
+  }
+  
+  /* Sidebar styles */
+  .sidebar-item {
+    @apply flex items-center space-x-3 px-4 py-2 text-spotify-text-gray hover:text-white transition-colors duration-200 cursor-pointer;
+  }
+  
+  .sidebar-item.active {
+    @apply text-white bg-spotify-light-gray;
+  }
+  
+  /* Grid layouts */
+  .music-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4;
+  }
+  
+  .album-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+  }
+  
+  /* Loading animations */
+  .loading-pulse {
+    @apply animate-pulse bg-gray-700 rounded;
+  }
+  
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-700 border-t-spotify-green;
+  }
+}
+
+@layer utilities {
+  /* Text utilities */
+  .text-ellipsis {
+    @apply truncate;
+  }
+  
+  .text-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Backdrop utilities */
+  .backdrop-blur-custom {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  
+  /* Custom shadows */
+  .shadow-spotify {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  
+  .shadow-player {
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none;
+  }
+  
+  .music-grid {
+    @apply grid-cols-2 gap-3;
+  }
+  
+  .album-grid {
+    @apply grid-cols-1 gap-4;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-input {
+    @apply px-8 py-2 text-sm;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    @apply py-1.5 px-4 text-sm;
+  }
+}
+
+/* Focus styles for accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-spotify-green ring-offset-2 ring-offset-spotify-black;
+}
+
+/* Custom selection colors */
+::selection {
+  background-color: #1DB954;
+  color: #000000;
+}
+
+::-moz-selection {
+  background-color: #1DB954;
+  color: #000000;
+}
