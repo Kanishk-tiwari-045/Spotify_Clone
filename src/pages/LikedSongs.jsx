@@ -11,8 +11,10 @@ import {
   ArrowDownTrayIcon,
   ShareIcon,
   ClockIcon,
-  MusicalNoteIcon
+  MusicalNoteIcon,
+  PlusIcon
 } from '@heroicons/react/24/outline'
+import AddToPlaylistModal from '../components/Sidebar/AddToPlaylistModal'
 import { HeartIcon as HeartIconSolid, PlayIcon as PlayIconSolid } from '@heroicons/react/24/solid'
 import { 
   setQueue, 
@@ -33,7 +35,7 @@ const LikedSongs = () => {
   const user = useSelector(selectUser)
   const likedSongs = useSelector(selectLikedSongs)
   const { currentSong, isPlaying, isShuffled } = useSelector(state => state.player)
-  
+  const [showAddToPlaylist, setShowAddToPlaylist] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
   const [hoveredSong, setHoveredSong] = useState(null)
   const [sortBy, setSortBy] = useState('recent')
@@ -315,7 +317,16 @@ const LikedSongs = () => {
                   >
                     <HeartIconSolid className="w-5 h-5" />
                   </button>
-                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowAddToPlaylist(song.id)
+                    }}
+                    className="opacity-0 group-hover:opacity-100 text-spotify-text-gray hover:text-spotify-green transition-all duration-300 p-1 rounded-full hover:bg-spotify-green/20"
+                    title="Add to playlist"
+                  >
+                    <PlusIcon className="w-5 h-5" />
+                  </button>
                   <span className="text-spotify-text-gray text-sm font-mono">
                     {formatDuration(song.duration)}
                   </span>
@@ -357,6 +368,12 @@ const LikedSongs = () => {
           transform: scale(1.02);
         }
       `}</style>
+      {showAddToPlaylist && (
+        <AddToPlaylistModal 
+          song={sortedSongs.find(s => s.id === showAddToPlaylist)} 
+          onClose={() => setShowAddToPlaylist(null)} 
+        />
+      )}
     </div>
   )
 }

@@ -27,15 +27,14 @@ const AddToPlaylistModal = ({ song, onClose }) => {
 
   const handleCreateAndAdd = () => {
     if (newPlaylistName.trim()) {
-      // Create new playlist
       dispatch(createPlaylist({ 
         name: newPlaylistName.trim(),
         description: `Created for "${song.title}"` 
       }))
       
-      // Add song to the newly created playlist (it will be the last one)
       setTimeout(() => {
-        const newPlaylist = playlists[playlists.length - 1]
+        const newPlaylists = JSON.parse(localStorage.getItem(`spotify_clone_playlists_${user.id}`) || '[]')
+        const newPlaylist = newPlaylists[newPlaylists.length - 1]
         if (newPlaylist) {
           dispatch(addSongToPlaylist({ playlistId: newPlaylist.id, song }))
         }
@@ -49,18 +48,13 @@ const AddToPlaylistModal = ({ song, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-spotify-gray rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden">
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-white text-xl font-bold">Add to Playlist</h2>
-          <button
-            onClick={onClose}
-            className="text-spotify-text-gray hover:text-white transition-colors"
-          >
+          <button onClick={onClose} className="text-spotify-text-gray hover:text-white transition-colors">
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Song Info */}
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-spotify-green rounded-lg flex items-center justify-center">
@@ -77,9 +71,7 @@ const AddToPlaylistModal = ({ song, onClose }) => {
           </div>
         </div>
 
-        {/* Playlist List */}
         <div className="max-h-60 overflow-y-auto">
-          {/* Create New Playlist Option */}
           <div className="p-4">
             {!showCreateNew ? (
               <button
@@ -120,7 +112,6 @@ const AddToPlaylistModal = ({ song, onClose }) => {
             )}
           </div>
 
-          {/* Existing Playlists */}
           {userPlaylists.map((playlist) => (
             <button
               key={playlist.id}

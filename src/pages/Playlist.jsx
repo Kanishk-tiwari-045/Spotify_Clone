@@ -523,16 +523,12 @@ const Playlist = () => {
                 <TrashIcon className="w-7 h-7" />
               </button>
             )}
-            
-            <button className="p-3 rounded-full text-spotify-text-gray hover:text-white hover:bg-white/10 transition-all duration-300 transform hover:scale-110">
-              <EllipsisHorizontalIcon className="w-7 h-7" />
-            </button>
           </div>
         </div>
       </div>
 
       {/* Songs List - Same style as LikedSongs */}
-      <div className="px-10 pb-8">
+      <div className="px-10 pb-8 pt-6">
         {playlist.songs && playlist.songs.length > 0 ? (
           <div className="space-y-2">
             {/* Enhanced Songs */}
@@ -541,7 +537,7 @@ const Playlist = () => {
                 key={song.id}
                 onMouseEnter={() => setHoveredSong(song.id)}
                 onMouseLeave={() => setHoveredSong(null)}
-                className="group grid grid-cols-12 gap-4 px-4 py-3 rounded-xl hover:bg-spotify-light-gray/50 transition-all duration-300 cursor-pointer transform hover:scale-102"
+                className="group grid grid-cols-9 gap-4 px-4 py-3 rounded-xl hover:bg-spotify-light-gray/50 transition-all duration-300 cursor-pointer transform hover:scale-102"
                 onDoubleClick={() => handlePlaySong(song, index)}
               >
                 <div className="col-span-1 flex items-center">
@@ -587,12 +583,6 @@ const Playlist = () => {
                   </div>
                 </div>
                 
-                <div className="col-span-3 flex items-center">
-                  <p className="text-spotify-text-gray text-sm truncate">
-                    {song.album || 'Unknown Album'}
-                  </p>
-                </div>
-                
                 <div className="col-span-2 flex items-center">
                   <p className="text-spotify-text-gray text-sm">
                     {formatDate(song.addedAt)}
@@ -613,11 +603,6 @@ const Playlist = () => {
                   >
                     {isLiked(song.id) ? <HeartIconSolid className="w-5 h-5" /> : <HeartIcon className="w-5 h-5" />}
                   </button>
-                  
-                  <span className="text-spotify-text-gray text-sm font-mono">
-                    {formatDuration(song.duration)}
-                  </span>
-                  
                   {!playlist.isDefault && (
                     <button
                       onClick={(e) => {
@@ -630,10 +615,9 @@ const Playlist = () => {
                       <TrashIcon className="w-4 h-4" />
                     </button>
                   )}
-                  
-                  <button className="opacity-0 group-hover:opacity-100 text-spotify-text-gray hover:text-white transition-all duration-300 p-1">
-                    <EllipsisHorizontalIcon className="w-5 h-5" />
-                  </button>
+                  <span className="text-spotify-text-gray text-sm font-mono">
+                    {formatDuration(song.duration)}
+                  </span>
                 </div>
               </div>
             ))}

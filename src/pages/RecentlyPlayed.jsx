@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import AddToPlaylistModal from '../components/Sidebar/AddToPlaylistModal'
 import { 
   ClockIcon, 
   PlayIcon, 
@@ -12,6 +13,7 @@ import {
   ArrowsRightLeftIcon,
   ArrowDownTrayIcon,
   TrashIcon,
+  PlusIcon,
   MusicalNoteIcon
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartIconSolid, PlayIcon as PlayIconSolid } from '@heroicons/react/24/solid'
@@ -38,6 +40,7 @@ const RecentlyPlayed = () => {
   const recentlyPlayed = useSelector(selectRecentlyPlayed)
   const likedSongs = useSelector(selectLikedSongs)
   const { currentSong, isPlaying, isShuffled } = useSelector(state => state.player)
+  const [showAddToPlaylist, setShowAddToPlaylist] = useState(null)
   
   const [isVisible, setIsVisible] = useState(false)
   const [hoveredSong, setHoveredSong] = useState(null)
@@ -355,7 +358,16 @@ const handlePlaySong = (song, index) => {
                   >
                     {isLiked(song.id) ? <HeartIconSolid className="w-5 h-5" /> : <HeartIcon className="w-5 h-5" />}
                   </button>
-                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowAddToPlaylist(song.id)
+                    }}
+                    className="opacity-0 group-hover:opacity-100 text-spotify-text-gray hover:text-spotify-green transition-all duration-300 p-1 rounded-full hover:bg-spotify-green/20"
+                    title="Add to playlist"
+                  >
+                    <PlusIcon className="w-5 h-5" />
+                  </button>
                   <span className="text-spotify-text-gray text-sm font-mono">
                     {formatDuration(song.duration)}
                   </span>
@@ -397,6 +409,12 @@ const handlePlaySong = (song, index) => {
           transform: scale(1.02);
         }
       `}</style>
+      {showAddToPlaylist && (
+        <AddToPlaylistModal 
+          song={sortedSongs.find(s => s.id === showAddToPlaylist)} 
+          onClose={() => setShowAddToPlaylist(null)} 
+        />
+      )}
     </div>
   )
 }

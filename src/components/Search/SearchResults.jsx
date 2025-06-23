@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartIconSolid, PlayIcon as PlayIconSolid } from '@heroicons/react/24/solid'
 import { useSelector } from 'react-redux'
+import AddToPlaylistModal from '../Sidebar/AddToPlaylistModal'
 import { selectLikedSongs } from '../../redux/features/authSlice'
 import toast from 'react-hot-toast'
 
@@ -29,6 +30,7 @@ const SearchResults = ({
   const [hoveredTrack, setHoveredTrack] = useState(null)
   const [hoveredArtist, setHoveredArtist] = useState(null)
   const [hoveredAlbum, setHoveredAlbum] = useState(null)
+  const [showAddToPlaylist, setShowAddToPlaylist] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
 
   // Entrance animation
@@ -142,8 +144,23 @@ const SearchResults = ({
                 >
                   {isLiked(track.id) ? <HeartIconSolid className="w-5 h-5" /> : <HeartIcon className="w-5 h-5" />}
                 </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowAddToPlaylist(song.id)
+                  }}
+                  className="opacity-0 group-hover:opacity-100 text-spotify-text-gray hover:text-spotify-green transition-all duration-300 p-1 rounded-full hover:bg-spotify-green/20"
+                  title="Add to playlist"
+                >
+                  <PlusIcon className="w-5 h-5" />
+                </button>
+                {showAddToPlaylist && (
+                  <AddToPlaylistModal 
+                    song={sortedSongs.find(s => s.id === showAddToPlaylist)} 
+                    onClose={() => setShowAddToPlaylist(null)} 
+                  />
+                )}
               </div>
-              
               <div className="text-spotify-text-gray text-sm font-mono">
                 {formatDuration(track.duration)}
               </div>
