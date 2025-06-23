@@ -147,19 +147,13 @@ const SearchResults = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setShowAddToPlaylist(song.id)
+                    setShowAddToPlaylist(track.id)
                   }}
                   className="opacity-0 group-hover:opacity-100 text-spotify-text-gray hover:text-spotify-green transition-all duration-300 p-1 rounded-full hover:bg-spotify-green/20"
                   title="Add to playlist"
                 >
                   <PlusIcon className="w-5 h-5" />
                 </button>
-                {showAddToPlaylist && (
-                  <AddToPlaylistModal 
-                    song={sortedSongs.find(s => s.id === showAddToPlaylist)} 
-                    onClose={() => setShowAddToPlaylist(null)} 
-                  />
-                )}
               </div>
               <div className="text-spotify-text-gray text-sm font-mono">
                 {formatDuration(track.duration)}
@@ -167,6 +161,12 @@ const SearchResults = ({
             </div>
           ))}
         </div>
+        {showAddToPlaylist && (
+                  <AddToPlaylistModal 
+                    song={tracks.find(t => t.id === showAddToPlaylist)} 
+                    onClose={() => setShowAddToPlaylist(null)} 
+                  />
+                )}
       </div>
     )
   }
